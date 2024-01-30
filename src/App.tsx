@@ -1,35 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {useFieldArray, useForm} from "react-hook-form";
+import {Button, Input} from 'antd';
+import styled from "@emotion/styled";
+import {PlusOutlined} from "@ant-design/icons";
+import BenchMarkSourceItem from './components/BenchMarkSourceItem';
+
+interface DataItem {
+    id: string;
+    text: string;
+}
+
+interface BenchMarkSource {
+    title: string;
+    url: string;
+    data: DataItem[];
+}
+
+interface FormData {
+    name: string;
+    description: string;
+    benchMarkSource: BenchMarkSource[];
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+    const {register, control, handleSubmit, watch} = useForm<FormData>({
+        defaultValues: {
+            benchMarkSource: [{title: '', url: '', data: [{id: '', text: ''}]}],
+        },
+    });
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const {fields: benchMarkFields, append: appendBenchMark, remove: removeBenchMark} = useFieldArray({
+        control,
+        name: 'benchMarkSource',
+    });
+
+    const onSubmit = (data: FormData) => {
+        console.log(data);
+    };
+
+    return (
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
+            <h2>벤치마크</h2>
+            <BenchmarkContainer>
+
+                <LabelInput>
+                    <label htmlFor="">제목 : </label>
+                    <Input {...register('name')} />
+                </LabelInput>
+                <LabelInput>
+                    <label htmlFor="">용어 설명 : </label>
+                    <Input {...register('description')}/>
+                </LabelInput>
+                {benchMarkFields.map((field, index) => (
+                    <BenchMarkSourceItem key={field.id} control={control} register={register} index={index}
+                                         watch={watch}
+                                         remove={removeBenchMark}/>
+                ))}
+
+                <Button style={{width: '15rem'}} type="default" icon={<PlusOutlined/>}
+                        onClick={() => appendBenchMark({title: '', url: '', data: [{id: '', text: ''}]})}>
+                    벤치마크 출처 추가하기
+                </Button>
+
+                <input type="submit"/>
+            </BenchmarkContainer>
+        </FormContainer>
+    );
 }
 
 export default App
+
+const FormContainer = styled.form`
+    width: 600px;
+`
+
+const LabelInput = styled.div`
+    display: flex;
+`
+
+const BenchmarkContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+`

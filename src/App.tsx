@@ -5,15 +5,10 @@ import styled from "@emotion/styled";
 import {PlusOutlined} from "@ant-design/icons";
 import BenchMarkSourceItem from './components/BenchMarkSourceItem';
 
-interface DataItem {
-    id: string;
-    text: string;
-}
-
 interface BenchMarkSource {
     title: string;
     url: string;
-    data: DataItem[];
+    data: string[];
 }
 
 interface FormData {
@@ -25,7 +20,7 @@ interface FormData {
 function App() {
     const {register, control, handleSubmit, watch} = useForm<FormData>({
         defaultValues: {
-            benchMarkSource: [{title: '', url: '', data: [{id: '', text: ''}]}],
+            benchMarkSource: [{title: '', url: '', data: []}],
         },
     });
 
@@ -52,13 +47,17 @@ function App() {
                     <Input {...register('description')}/>
                 </LabelInput>
                 {benchMarkFields.map((field, index) => (
-                    <BenchMarkSourceItem key={field.id} control={control} register={register} index={index}
+                    <BenchMarkSourceItem key={index} control={control} register={register} index={index}
                                          watch={watch}
                                          remove={removeBenchMark}/>
                 ))}
 
                 <Button style={{width: '15rem'}} type="default" icon={<PlusOutlined/>}
-                        onClick={() => appendBenchMark({title: '', url: '', data: [{id: '', text: ''}]})}>
+                        onClick={() => appendBenchMark({
+                            title: '',
+                            url: '',
+                            data: []
+                        })}>
                     벤치마크 출처 추가하기
                 </Button>
 

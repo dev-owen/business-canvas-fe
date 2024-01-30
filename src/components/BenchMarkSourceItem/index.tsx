@@ -4,15 +4,10 @@ import TextArea from "antd/es/input/TextArea";
 import {MinusOutlined, PlusOutlined} from "@ant-design/icons";
 import styled from "@emotion/styled";
 
-interface DataItem {
-    id: string;
-    text: string;
-}
-
 interface BenchMarkSource {
     title: string;
     url: string;
-    data: DataItem[];
+    data: string[];
 }
 
 interface FormData {
@@ -45,10 +40,10 @@ const BenchMarkSourceItem = ({control, register, index, remove, watch}: BenchMar
                 <label htmlFor="">URL : </label>
                 <Input {...register(`benchMarkSource.${index}.url`)} />
             </LabelInput>
-            {watch(`benchMarkSource.${index}.data`).map((dataItem: DataItem, dataIndex: number) => (
-                <BenchmarkDataContainer key={dataItem.id}>
+            {watch(`benchMarkSource.${index}.data`).map((_: string, dataIndex: number) => (
+                <BenchmarkDataContainer key={dataIndex}>
                     <label htmlFor="">벤치마크 데이터</label>
-                    <TextArea {...register(`benchMarkSource.${index}.data.${dataIndex}.text`)} />
+                    <TextArea {...register(`benchMarkSource.${index}.data.${dataIndex}`)} />
                     <Button style={{width: '5rem'}} danger type="primary" icon={<MinusOutlined/>}
                             onClick={() => removeDataItem(dataIndex)}>
                         삭제
@@ -56,7 +51,7 @@ const BenchMarkSourceItem = ({control, register, index, remove, watch}: BenchMar
                 </BenchmarkDataContainer>
             ))}
             <Button style={{width: '15rem'}} type="default" icon={<PlusOutlined/>}
-                    onClick={() => append({id: '', text: ''})}>
+                    onClick={() => append('')}>
                 벤치마크 데이터 추가하기
             </Button>
             <Button style={{width: '5rem'}} danger type="primary" icon={<MinusOutlined/>}

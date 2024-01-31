@@ -27,7 +27,6 @@ const BenchMark = () => {
     });
 
     const onSubmit = useCallback((data: BenchMarkForm) => {
-        console.log(data);
         localStorage.setItem('formData', JSON.stringify(data));
     }, []);
 

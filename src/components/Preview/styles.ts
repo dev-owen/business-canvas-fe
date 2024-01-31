@@ -80,8 +80,8 @@ export const BenchMarkSourceTitle = styled.div`
 
 export const BenchMarkSourceData = styled.div`
     display: flex;
+    flex-direction: column;
     padding: 8px;
-    align-items: center;
     gap: 10px;
     align-self: stretch;
 
@@ -98,6 +98,13 @@ export const BenchMarkSourceData = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 20px; /* 166.667% */
+
+    text-align: left;
+
+    h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
+        text-align: left;
+    }
 `
 
 export const URL = styled.a`

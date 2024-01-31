@@ -30,16 +30,6 @@ export const BenchmarkSourceContainer = styled.div`
     gap: 0.5rem;
 `
 
-export const BenchmarkDataContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    border: 1px solid gray;
-    background-color: lightgray;
-    border-radius: 0.5rem;
-    gap: 0.5rem;
-    padding: 0.5rem;
-`
-
 export const TopContentWithDeleteButton = styled.div`
     display: flex;
     justify-content: space-between;

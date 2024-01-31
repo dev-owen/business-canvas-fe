@@ -8,8 +8,8 @@ import Preview from "./components/Preview";
 function App() {
     const [data, setData] = useState<string | null>(null);
     useEffect(() => {
-        localForage.getItem('formData').then((localStorageData) => {
-            if (localStorageData) setData(localStorageData as string);
+        localForage.getItem('formData').then((localForageData) => {
+            if (localForageData) setData(localForageData as string);
         }).catch((err) => {
             console.error("Failed to load data from localForage", err);
         });

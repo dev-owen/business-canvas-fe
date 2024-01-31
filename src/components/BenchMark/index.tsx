@@ -8,12 +8,16 @@ import LabelInput from "../LabelInput";
 
 const INIT_BENCHMARK_SOURCE: BenchMarkSource = {title: '', url: '', data: ['']}
 
-const BenchMark = () => {
+interface BenchMarkProps {
+    setData: (data: string) => void;
+}
+
+const BenchMark = ({setData}: BenchMarkProps) => {
     const {control, handleSubmit, setValue} = useForm<BenchMarkForm>({
         defaultValues: {
             name: '',
             description: '',
-            benchMarkSource: [INIT_BENCHMARK_SOURCE],
+            benchMarkSources: [INIT_BENCHMARK_SOURCE],
         },
     });
 
@@ -23,17 +27,18 @@ const BenchMark = () => {
         remove: removeBenchMarkSource
     } = useFieldArray({
         control,
-        name: 'benchMarkSource',
+        name: 'benchMarkSources',
     });
 
     const onSubmit = useCallback((data: BenchMarkForm) => {
         localStorage.setItem('formData', JSON.stringify(data));
+        setData(JSON.stringify(data));
     }, []);
 
     const removeDataItem = useCallback((index: number, dataIndex: number) => {
-        const data = control._formValues.benchMarkSource[index].data;
+        const data = control._formValues.benchMarkSources[index].data;
         const newData = [...data.slice(0, dataIndex), ...data.slice(dataIndex + 1)];
-        setValue(`benchMarkSource.${index}.data`, newData);
+        setValue(`benchMarkSources.${index}.data`, newData);
     }, [control, setValue]);
 
     return (
@@ -46,7 +51,7 @@ const BenchMark = () => {
                     <$.BenchmarkSourceContainer key={field.id}>
                         <$.TopContentWithDeleteButton>
                             <LabelInput label={'제목 : '} control={control}
-                                        name={`benchMarkSource.${index}.title`} isLengthLimit/>
+                                        name={`benchMarkSources.${index}.title`} isLengthLimit/>
                             <$.DeleteButtonItem danger type="primary"
                                                 icon={<MinusOutlined/>}
                                                 onClick={() => removeBenchMarkSource(index)}>
@@ -54,8 +59,8 @@ const BenchMark = () => {
                             </$.DeleteButtonItem>
                         </$.TopContentWithDeleteButton>
                         <LabelInput label={'URL : '} control={control}
-                                    name={`benchMarkSource.${index}.url`} isLengthLimit/>
-                        <Controller name={`benchMarkSource.${index}.data`} control={control} render={({field}) => (
+                                    name={`benchMarkSources.${index}.url`} isLengthLimit/>
+                        <Controller name={`benchMarkSources.${index}.data`} control={control} render={({field}) => (
                             <>
                                 {field.value.map((dataItem: string, dataIndex: number) => (
                                     <BenchMarkData key={dataIndex} index={index} dataIndex={dataIndex} field={field}

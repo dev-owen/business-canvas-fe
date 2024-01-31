@@ -9,7 +9,7 @@ interface BenchMarkDataProps {
     dataIndex: number;
     removeDataItem: (index: number, dataIndex: number) => void;
     dataItem: string;
-    field: ControllerRenderProps<BenchMarkForm, `benchMarkSource.${number}.data`>;
+    field: ControllerRenderProps<BenchMarkForm, `benchMarkSources.${number}.data`>;
 }
 
 const BenchMarkData = ({index, dataIndex, removeDataItem, field, dataItem}: BenchMarkDataProps) => {

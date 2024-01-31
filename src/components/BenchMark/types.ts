@@ -7,5 +7,5 @@ export interface BenchMarkSource {
 export interface BenchMarkForm {
     name: string;
     description: string;
-    benchMarkSource: BenchMarkSource[];
+    benchMarkSources: BenchMarkSource[];
 }

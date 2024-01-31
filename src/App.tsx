@@ -1,14 +1,18 @@
 import './App.css'
 import BenchMark from "./components/BenchMark";
-import Preview from "./components/Preview";
 import styled from "@emotion/styled";
 import {useEffect, useState} from "react";
+import * as localForage from "localforage";
+import Preview from "./components/Preview";
 
 function App() {
     const [data, setData] = useState<string | null>(null);
     useEffect(() => {
-        const localStorageData = localStorage.getItem('formData');
-        if (localStorageData) setData(localStorageData)
+        localForage.getItem('formData').then((localStorageData) => {
+            if (localStorageData) setData(localStorageData as string);
+        }).catch((err) => {
+            console.error("Failed to load data from localForage", err);
+        });
     }, [])
     return (<AppContainer>
         <BenchMark setData={setData}/>

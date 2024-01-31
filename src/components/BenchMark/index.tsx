@@ -5,6 +5,7 @@ import {BenchMarkForm, BenchMarkSource} from './types.ts'
 import BenchMarkData from "../BenchMarkData";
 import {useCallback} from "react";
 import LabelInput from "../LabelInput";
+import * as localforage from "localforage";
 
 const INIT_BENCHMARK_SOURCE: BenchMarkSource = {title: '', url: '', data: ['']}
 
@@ -30,9 +31,14 @@ const BenchMark = ({setData}: BenchMarkProps) => {
         name: 'benchMarkSources',
     });
 
-    const onSubmit = useCallback((data: BenchMarkForm) => {
-        localStorage.setItem('formData', JSON.stringify(data));
-        setData(JSON.stringify(data));
+    const onSubmit = useCallback(async (data: BenchMarkForm) => {
+        await localforage.setItem('formData', JSON.stringify(data)).then(() => {
+            setData(JSON.stringify(data));
+        }).catch((err) => {
+            console.error("Failed to load data from localForage", err);
+        });
+
+
     }, []);
 
     const removeDataItem = useCallback((index: number, dataIndex: number) => {

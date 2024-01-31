@@ -9,23 +9,23 @@ interface PreviewProps {
 const Preview = ({formData}: PreviewProps) => {
     return (
         <$.PreviewContainer>
-            <$.Title>
+            {formData.name && <$.Title>
                 {formData.name}
-            </$.Title>
-            <$.Description>
+            </$.Title>}
+            {formData.description && <$.Description>
                 {formData.description}
-            </$.Description>
+            </$.Description>}
             {
                 formData.benchMarkSources.map((benchMarkSource, index) => (
                     <$.BenchMarkSource key={index}>
-                        <$.BenchMarkSourceTitle>
+                        {benchMarkSource.title && <$.BenchMarkSourceTitle>
                             <img src={BookTwoTone} alt="BookTwoTone"/>
                             {benchMarkSource.title}
                             <$.URL href={benchMarkSource.url}>URL</$.URL>
-                        </$.BenchMarkSourceTitle>
-                        <$.BenchMarkSourceData>
+                        </$.BenchMarkSourceTitle>}
+                        {benchMarkSource.data.length > 0 && <$.BenchMarkSourceData>
                             {benchMarkSource.data.join(' ')}
-                        </$.BenchMarkSourceData>
+                        </$.BenchMarkSourceData>}
                     </$.BenchMarkSource>
                 ))
             }
